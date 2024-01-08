@@ -1,6 +1,5 @@
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import LoginScreen from './LoginScreen';
 import HomeSearch from '../component/HomeSearch';
 import HomeBanner from '../component/HomeBanner';
 import ProductTitle from '../component/ProductTitle';
@@ -10,15 +9,18 @@ import axios from 'axios';
 
 const HomeScreen = () => {
   const [data, setData] = useState([]);
+  
   useEffect(()=>{
-    axios.get("https://fakestoreapi.com/products/category/electronics")
+    axios.get("https://fakestoreapi.com/products")
     .then((response)=>setData(response.data)).catch((err)=>console.log(err))
   },[]);
+ 
   const [product, setProduct] = useState([]);
   useEffect(()=>{
     axios.get("https://fakestoreapi.com/products/category/jewelery")
     .then((response)=>setProduct(response.data)).catch((err)=>console.log(err))
   },[]);
+  
   const [pro, setPro] = useState([]);
   useEffect(()=>{
     axios.get("https://fakestoreapi.com/products/category/men's clothing")
@@ -40,7 +42,7 @@ const HomeScreen = () => {
         <View style={{gap:20, paddingBottom:20}} >
           <HomeSearch />
           <HomeBanner />
-          <ProductTitle title='Electronics' />
+          <ProductTitle title='Products' />
           <ProductCarousel data={data}/>
           <ProductTitle title='Jewelery' />
           <ProductCarousel data={product} />

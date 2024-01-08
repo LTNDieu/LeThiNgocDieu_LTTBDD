@@ -6,6 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import DetailScreen from './screens/DetailScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import LoginScreen from './screens/LoginScreen';
 function UITab() {
     const Tab = createBottomTabNavigator();
 
@@ -23,12 +25,13 @@ function UITab() {
                 <FontAwesome5 name="shopping-cart" size={24} color="black" />
             )
         }} />
-        <Tab.Screen name="Profile" component={CartScreen} options={{
+        <Tab.Screen name="Profile" component={ProfileScreen} options={{
             tabBarLabel: 'Tài khoản',
             tabBarIcon: () => (
                 <MaterialIcons name="person" size={24} color="black" />
             )
         }} />
+
     </Tab.Navigator>
 }
 

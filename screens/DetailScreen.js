@@ -11,6 +11,7 @@ const DetailScreen = ({ route }) => {
   const storeData = useSelector((state) => state.CartSlice);
   const dispatch = useDispatch();
   const productData = route.params.main;
+  // const { title, description, price, image } = productData;
   const { title, description, price, image } = productData;
   const nav = useNavigation();
   return (
@@ -51,7 +52,6 @@ const DetailScreen = ({ route }) => {
           </Text>
           <MaterialIcons name="favorite-border" size={30} color="black" />
         </View>
-        {/* <Text style={{ marginTop: 5, fontSize: 15, color: 'grey' }}>{pieces}, Price</Text> */}
         <Text style={{ marginTop: 5, fontSize: 28, color: 'black', fontWeight: "bold" }}>${price}</Text>
         <Text style={{ marginTop: 15, fontSize: 30, color: 'black', fontWeight: "bold" }}>Product Detail</Text>
         <Text style={{ marginTop: 10, fontSize: 15, color: 'grey', fontWeight: "bold" }}>{description}</Text>

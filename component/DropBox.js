@@ -26,7 +26,7 @@ const DropBox = () => {
                                 marginBottom: 10,
                                 paddingVertical: 20,
                             }}>
-                            <Text>{item.title}</Text>
+                            <Text style={{ fontSize: 20, color: "black", fontWeight: "400" }}>{item.title}</Text>
                             <AntDesign name={myIndex == index && toggle ? "down" : "right"} size={24} color="black" />
                         </TouchableOpacity>
                         {myIndex == index && toggle ? <Text>{item.content}</Text> : null}

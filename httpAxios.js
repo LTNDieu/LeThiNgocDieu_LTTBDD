@@ -6,5 +6,7 @@ const httpAxios = axios.create({
     timeout: 1000,
     headers: {'X-Custom-Header': 'foobar'}
   });
-
+httpAxios.interceptors.response.use((response) => {
+  return response.data;
+})
   export default httpAxios;

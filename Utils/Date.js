@@ -54,16 +54,20 @@ export const vegetables = [
 
 export const Dropdown = [
     {
-        title: "Product-Details",
+        title: "Tài khoản và bảo mật",
         content: 
         "Apples are among the world's most popular fruits. They grow on the apple tree (Malus domestica), originally from Central Asia. Apples are high in fiber, vitamin C, and various antioxidants. They are also very filling, considering their low calorie count."
     },
     {
-        title: "Nutritions",
+        title: "Trợ giúp và hỗ trợ",
         content:"Vitamin12",
-    },
+    },  
     {
-        title: "Reviews",
+        title: "Cài đặt",
+        content:"Vitamin12",
+    },  
+    {
+        title: "Đăng xuất",
         content: "4-reviews found in this product review",
     },
 ]
