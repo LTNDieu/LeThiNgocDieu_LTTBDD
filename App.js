@@ -14,6 +14,10 @@ import { Provider } from 'react-redux';
 import { Store } from './redux/Store';
 import OderplaceScreen from './screens/OderplaceScreen';
 import UITab from './UITab';
+import Electronics from './component/Electronics';
+import Jewelery from './component/Jewelery';
+import Men from './component/Men';
+import Women from './component/Women';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,10 +36,10 @@ export default function App() {
          <Stack.Screen name="Detail" component={DetailScreen}/>
          <Stack.Screen name="OrderPlaced" component={OderplaceScreen}/>
          <Stack.Screen name="UITab" component={UITab}/>
-         {/* <Stack.Screen name="Home" component={HomeScreen}/>
-         <Stack.Screen name="Detail" component={DetailScreen}/>
-         <Stack.Screen name="Cart" component={CartScreen}/>
-         <Stack.Screen name="OrderPlaced" component={OderplaceScreen}/> */}
+         <Stack.Screen name="Electronics" component={Electronics}/>
+         <Stack.Screen name="Jewelery" component={Jewelery}/>
+         <Stack.Screen name="Men" component={Men}/>
+         <Stack.Screen name="Women" component={Women}/>
       </Stack.Navigator>
       </NavigationContainer>
 

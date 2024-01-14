@@ -8,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import DetailScreen from './screens/DetailScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
+import Jewelery from './component/Jewelery';
 function UITab() {
     const Tab = createBottomTabNavigator();
 

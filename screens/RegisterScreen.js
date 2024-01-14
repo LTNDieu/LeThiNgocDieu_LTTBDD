@@ -1,16 +1,35 @@
-import { Image, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, KeyboardAvoidingView, Pressable, StyleSheet, Text, TextInput, View, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const navigation = useNavigation();
+
+  const onSubmit = () => {
+    let formData = {
+      email: email,
+      password: password,
+    }
+
+    axios.post('https://65a0a070600f49256fb01ad8.mockapi.io/api/user/users', formData)
+      .then((respone) => {
+        if (respone.data) {
+          Alert.alert("Registered successfully")
+          navigation.navigate("Login");
+        }
+      }
+      )
+      .catch((err) => console.log(err))
+
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}>
       <View>
@@ -56,7 +75,7 @@ const RegisterScreen = () => {
           <Text style={{ color: "#007FFF", fontWeight: "500" }}>Forgot Password</Text>
         </View>
         <View style={{ marginTop: 60 }}>
-          <Pressable
+          <Pressable onPress={onSubmit}
             style={{ width: 200, backgroundColor: "#FEBE10", borderRadius: 6, marginLeft: "auto", marginRight: "auto", padding: 15 }}>
             <Text style={{ textAlign: "center", color: "white", fontSize: 16, fontWeight: "bold" }}>Register</Text>
           </Pressable>
@@ -64,6 +83,7 @@ const RegisterScreen = () => {
             <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>Already have an account? Sign In</Text>
           </Pressable>
         </View>
+
       </KeyboardAvoidingView>
     </SafeAreaView>
 
