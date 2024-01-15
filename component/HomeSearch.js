@@ -1,84 +1,55 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { responsiveHeight } from 'react-native-responsive-dimensions'
 import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
-const HomeSearch = () => {
-  const nav = useNavigation();
-  const [apiData, setApiData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false); 
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  
-  useEffect(() => {
-    // Thực hiện cuộc gọi API và lấy dữ liệu từ URL của bạn
-    setLoading(true);
+const HomeSearch = ({ setResults }) => {
+  const [input, setInput] = useState("");
+
+  const fechData = (value) => {
     fetch('https://fakestoreapi.com/products')
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false);
-        setApiData(data);
+      .then((response) => response.json())
+      .then((json) => {
+        const results = json.filter((item) => {
+          return value && item && item.title
+            && item.title.toLowerCase().includes(value);
+        })
+        setResults(results);
       })
-      .catch(error => {
-        setLoading(false);
-        console.error('Lỗi cuộc gọi API:', error);
-     
-      });
-  }, []);  
-  
-  const handleSearch = (query) => {
-    setSearchQuery(query); 
-    const filtered = apiData.filter((product) =>
-      product.title.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  };
+  }
 
-  const getFilteredProductsByCategory = () => {
-    if (idCategory) {
-      return apiData.filter((product) => product.idCategory === idCategory);
-      
-    } else {
-      return apiData;
-    }
-  };
 
+  const handleChange = (value) => {
+    setInput(value);
+    fechData(value);
+  }
   return (
-    <View style={{
-      height: responsiveHeight(7),
-      flexDirection: 'row',
-    }}>
+    <ScrollView>
       <View style={{
-        flex: 0.95,
+        backgroundColor: "#00CED1",
+        padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        backgroundColor: "#E2E3E2",
-        gap: 10
       }}>
-        <Feather name="search" size={24} color="black" />
-        <TextInput value={searchQuery} onChangeText={(text) => {
-          setSearchQuery(text);
-          handleSearch(text);
-        }} style={{ flex: 1 }} placeholder='Search Store' />
-      </View>
-      <TouchableOpacity
-        onPress={() => {
-          nav.navigate('Cart');
-        }}
-        style={{
-          alignItems: 'center',
+        <Pressable style={{
           flexDirection: 'row',
-          alignContent: 'center',
-          marginLeft: 10,
-          justifyContent: "space-between",
+          alignItems: 'center',
+          marginHorizontal: 7,
+          borderRadius: 3,
+          backgroundColor: "white",
+          gap: 10,
+          height: 38,
+          flex: 1,
         }}>
-        <FontAwesome5 name="shopping-cart" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
+          <Feather name="search" size={24} color="black" />
+          <TextInput value={input}
+            onChangeText={(text) => {
+              handleChange(text);
+            }}
+            style={{ flex: 1 }} placeholder='Search Store' />
+        </Pressable>
+        <Feather name="mic" size={24} color="black" />
+      </View>
+    </ScrollView>
   )
 }
 

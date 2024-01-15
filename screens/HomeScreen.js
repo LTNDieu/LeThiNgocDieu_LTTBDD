@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import HomeSearch from '../component/HomeSearch';
 import HomeBanner from '../component/HomeBanner';
@@ -6,9 +6,18 @@ import ProductTitle from '../component/ProductTitle';
 import ProductCarousel from '../component/ProductCarousel';
 import axios from 'axios';
 import CategoryScreen from './CategoryScreen';
+import { BottomModal, ModalContent, SlideAnimation } from 'react-native-modals';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const [data, setData] = useState([]);
+  const [results, setResults] = useState([]);
+  const [modaVisible, setModaVisible] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     axios.get("https://fakestoreapi.com/products")
@@ -34,26 +43,111 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1, paddingHorizontal: 20, paddingTop: 10 }} >
-        <View style={{ gap: 20, paddingBottom: 20 }} >
-          {/* <HomeSearch /> */}
-          <CategoryScreen/>
-          <HomeBanner />
-          <ProductTitle title='Products' />
-          <ProductCarousel data={data} />
-          <ProductTitle title='Jewelery' />
-          <ProductCarousel data={product} />
-          <ProductTitle title='Men clothing' />
-          <ProductCarousel data={pro} />
-          <ProductTitle title='Women clothing' />
-          <ProductCarousel data={prod} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "white" }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={{ paddingBottom: 20 }} >
+            <HomeSearch setResults={setResults} />
+            <Pressable
+              onPress={() => setModaVisible(!modaVisible)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
+                padding: 10,
+                backgroundColor: "#AFEEEE"
+              }}>
+              <Ionicons name="location-outline" size={24} color="black" />
+
+              <Pressable>
+                <Text style={{
+                  fontSize: 13,
+                  fontWeight: "500"
+                }}>Deliver to Sujan - Bangalore $60021</Text>
+              </Pressable>
+
+              <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
+            </Pressable>
+            <CategoryScreen />
+            <HomeBanner />
+            <ProductCarousel data={results} />
+            <ProductTitle title='Products' />
+            <ProductCarousel data={data} />
+            <ProductTitle title='Jewelery' />
+            <ProductCarousel data={product} />
+            <ProductTitle title='Men clothing' />
+            <ProductCarousel data={pro} />
+            <ProductTitle title='Women clothing' />
+            <ProductCarousel data={prod} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+      <BottomModal
+        setModaVisible={setModaVisible}
+        onBackdropPress={() => setModaVisible(!modaVisible)}
+        swipeDirection={["up", "down"]}
+        swipeThreshold={200}
+        modalAnimation={
+          new SlideAnimation({
+            slideFrom: "bottom"
+          })
+        }
+        onHardwareBackPress={() => setModaVisible(!modaVisible)}
+        visible={modaVisible}
+        onTouchOutside={() => setModaVisible(!modaVisible)}
+      >
+        <ModalContent style={{ width: "100%", height: 400 }}>
+          <View>
+            <Text>Choose your Location</Text>
+            <Text style={{ marginTop: 5, fontSize: 16, color: "gray" }}>
+              Select a delivery location too see product availabilty and delivery options
+            </Text>
+          </View>
+          <ScrollView>
+            <Pressable
+              onPress={() => {
+                setModaVisible(false);
+                navigation.navigate("Address")
+              }}
+              style={{
+                width: 140,
+                height: 140,
+                borderColor: "#D0D0D0",
+                marginTop: 10,
+                borderWidth: 1,
+                padding: 10,
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+              <Text style={{
+                textAlign: "center",
+                color: "#0066b2",
+                fontWeight: "500"
+              }}>Add an Address or pick-up point</Text>
+            </Pressable>
+          </ScrollView>
+          <View style={{ flexDirection: "column", gap: 7, marginBottom: 30 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+              <Entypo name="location-pin" size={22} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>Enter an Indian pincode</Text>
+            </View>
+
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+              <Ionicons name="locate-sharp" size={22} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>Use My Currect Location</Text>
+            </View>
+
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+              <AntDesign name="earth" size={22} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>Deliver outside Indian</Text>
+            </View>
+          </View>
+        </ModalContent>
+      </BottomModal>
+    </>
   )
 }
 

@@ -18,6 +18,9 @@ import Electronics from './component/Electronics';
 import Jewelery from './component/Jewelery';
 import Men from './component/Men';
 import Women from './component/Women';
+import { ModalPortal } from 'react-native-modals';
+import AddAddressScreen from './screens/AddAddressScreen';
+import AddressScreen from './screens/AddressScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,9 +43,11 @@ export default function App() {
          <Stack.Screen name="Jewelery" component={Jewelery}/>
          <Stack.Screen name="Men" component={Men}/>
          <Stack.Screen name="Women" component={Women}/>
+         <Stack.Screen name="Address" component={AddAddressScreen}/>
+         <Stack.Screen name="Add" component={AddressScreen}/>
       </Stack.Navigator>
       </NavigationContainer>
-
+      <ModalPortal/>
     </Provider>
   );
 }
