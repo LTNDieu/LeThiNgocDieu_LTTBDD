@@ -40,6 +40,9 @@ const cartslice = createSlice({
                 isAvailable.quantity--;
             }
         },
+        clearCart: (state) => {
+           return []
+        },
     },
 });
 
@@ -48,6 +51,7 @@ export const {
     removeFromCart,
     incrementQuantity,
     decrementQuantuty,
+    clearCart,
 } = cartslice.actions;
 
 export default cartslice.reducer;

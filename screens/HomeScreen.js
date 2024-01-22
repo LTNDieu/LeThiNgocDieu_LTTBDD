@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable } from 'react-native'
+import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import HomeSearch from '../component/HomeSearch';
 import HomeBanner from '../component/HomeBanner';
@@ -12,12 +12,20 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
 const HomeScreen = () => {
   const [data, setData] = useState([]);
   const [results, setResults] = useState([]);
   const [modaVisible, setModaVisible] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const navigation = useNavigation();
+
+  const [address, setAddress] = useState([]);
+  useEffect(() => {
+    axios.get("https://65a0a070600f49256fb01ad8.mockapi.io/api/user/Address")
+      .then((response) => setAddress(response.data)).catch((err) => console.log(err))
+  }, []);
 
   useEffect(() => {
     axios.get("https://fakestoreapi.com/products")
@@ -63,10 +71,17 @@ const HomeScreen = () => {
               <Ionicons name="location-outline" size={24} color="black" />
 
               <Pressable>
-                <Text style={{
-                  fontSize: 13,
-                  fontWeight: "500"
-                }}>Deliver to Sujan - Bangalore $60021</Text>
+                {selectedAddress ? (
+                  <Text style={{
+                    fontSize: 13,
+                    fontWeight: "500"
+                  }}>{selectedAddress?.name} - {selectedAddress?.street}, {selectedAddress?.houseNo}, {selectedAddress?.landmark}</Text>
+                ) : (
+                  <Text style={{
+                    fontSize: 13,
+                    fontWeight: "500"
+                  }}>Add a Address</Text>
+                )}
               </Pressable>
 
               <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
@@ -101,20 +116,51 @@ const HomeScreen = () => {
       >
         <ModalContent style={{ width: "100%", height: 400 }}>
           <View>
-            <Text>Choose your Location</Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>Choose your Location</Text>
             <Text style={{ marginTop: 5, fontSize: 16, color: "gray" }}>
               Select a delivery location too see product availabilty and delivery options
             </Text>
           </View>
-          <ScrollView>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {address?.map((item, index) => {
+              return (
+                <Pressable
+                  onPress={() => setSelectedAddress(item)}
+                  key={index}
+                  style={{
+                    width: 150,
+                    height: 150,
+                    borderColor: "#D0D0D0",
+                    borderWidth: 1,
+                    padding: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 3,
+                    marginRight: 15,
+                    marginTop: 10,
+                    backgroundColor: selectedAddress === item ? "#FBCEB1" : "white"
+                  }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }} >
+                    <Text style={{ fontSize: 13, fontWeight: "bold" }}>{item?.name}</Text>
+                    <Entypo name="location-pin" size={24} color="red" />
+                  </View>
+                  <Text numberOfLines={1} style={{ width: 130, textAlign: "center", fontSize: 13 }}>{item?.street}</Text>
+                  <Text numberOfLines={1} style={{ width: 130, textAlign: "center", fontSize: 13 }}>{item?.houseNo}, {item?.landmark}</Text>
+                  <Text numberOfLines={1} style={{ width: 130, textAlign: "center", fontSize: 13 }}>VietNam</Text>
+
+                </Pressable>
+
+              )
+            })}
+
             <Pressable
               onPress={() => {
                 setModaVisible(false);
                 navigation.navigate("Address")
               }}
               style={{
-                width: 140,
-                height: 140,
+                width: 150,
+                height: 150,
                 borderColor: "#D0D0D0",
                 marginTop: 10,
                 borderWidth: 1,
